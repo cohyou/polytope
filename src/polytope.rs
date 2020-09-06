@@ -132,7 +132,7 @@ impl Polytope {
         self.apgs.insert(name.to_string(), Rc::new(apg));
     }
 
-    pub fn make_default_coproduct(&mut self, apg: Rc<APG>) -> APGMorphism {
+    pub fn make_morphism_coproduct(&mut self, apg: Rc<APG>) -> APGMorphism {
         let name = Label(apg.name.clone());
         if let Some(label_index) = self.labels.get_index_of(&name) {
             APGMorphism::default_coproduct(label_index)
