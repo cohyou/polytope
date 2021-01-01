@@ -12,12 +12,14 @@ pub use apg::*;
 type Element = usize;
 type Name = String;
 
-#[derive(PartialEq, Eq, Hash, Default, Debug)]
+#[derive(Clone, PartialEq, Eq, Hash, Default, Debug)]
 struct Label(Rc<Name>);
 
-#[derive(PartialEq, Eq, Hash, Debug)]
+#[derive(Clone, PartialEq, Eq, Hash, Debug)]
 enum Value {
     Unit,
+    Pair(Rc<Value>, Rc<Value>),
+    Id(Element),
 }
 
 type Index = usize;
@@ -142,6 +144,65 @@ impl Polytope {
             let new_label_index = self.labels.get_index_of(&name);
             APGMorphism::default_coproduct(new_label_index.unwrap())
         }
+    }
+
+    pub fn make_product(&mut self, name:&str, apg1: Rc<APG>, apg2: Rc<APG>, fst: APGMorphism, snd: APGMorphism) {
+        let mut elements = IndexSet::new();
+        for _ in apg1.elements.clone() {
+            for _ in apg2.elements.clone() {
+                let element_index = self.next_element_index;
+                self.next_element_index += 1;
+                elements.insert(element_index);
+            }
+        }
+
+        let mut lambda = vec![];
+        for label_index1 in apg1.lambda.clone() {
+            let Label(label_name1) = self.labels[label_index1].clone();
+            for label_index2 in apg2.lambda.clone() {
+                let Label(label_name2) = self.labels[label_index2].clone();
+
+                let new_label_name = format!("{}*{}", label_name1, label_name2);
+                let new_label = Label(Rc::new(new_label_name.clone()));
+                self.labels.insert(new_label);
+                let new_label_index = self.labels.get_index_of(&Label(Rc::new(new_label_name)));
+                lambda.push(new_label_index.unwrap());
+            }
+        }
+
+        let mut upsilon = vec![];
+        for value_index1 in apg1.upsilon.clone() {
+            let value1 = self.values[value_index1].clone();
+            for value_index2 in apg2.upsilon.clone() {
+                let value2 = self.values[value_index2].clone();
+
+                let new_value = Value::Pair(Rc::new(value1.clone()), Rc::new(value2.clone()));
+                self.values.insert(new_value.clone());
+                let new_value_index = self.values.get_index_of(&new_value);
+                upsilon.push(new_value_index.unwrap());
+            }
+        }
+
+        let apg = APG {
+            name: Rc::new(name.to_string()),
+            elements: elements,
+            lambda: lambda,
+            upsilon: upsilon,
+        };
+        self.apgs.insert(name.to_string(), Rc::new(apg));
+    }
+
+    pub fn make_morphism_product(&mut self, apg: Rc<APG>) -> APGMorphism {
+        APGMorphism::default()
+        // let name = Label(apg.name.clone());
+        // if let Some(label_index) = self.labels.get_index_of(&name) {
+        //     APGMorphism::default_coproduct(label_index)
+        // } else {
+        //     let new_label = Label(apg.name.clone());
+        //     self.labels.insert(new_label);
+        //     let new_label_index = self.labels.get_index_of(&name);
+        //     APGMorphism::default_coproduct(new_label_index.unwrap())
+        // }
     }
 }
 

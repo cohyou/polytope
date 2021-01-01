@@ -1,0 +1,6 @@
+material
+string
+u64
+
+name: material -> string
+price: material -> u64
