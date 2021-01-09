@@ -1,3 +1,3 @@
-mod polytope;
+mod algebraic_property_graph;
 
-pub use polytope::*;
+pub use algebraic_property_graph::*;

@@ -1,4 +1,4 @@
-mod apg;
+mod util;
 
 
 use std::rc::Rc;
@@ -6,7 +6,7 @@ use std::collections::{HashMap, BTreeSet};
 use indexmap::set::IndexSet;
 use std::fmt;
 
-pub use apg::*;
+pub use util::*;
 
 
 type Element = usize;
