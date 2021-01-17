@@ -1,5 +1,8 @@
+use std::io::BufReader;
+use crate::section::read_u32_from_leb128;
+
 #[allow(overflowing_literals)]
-fn test_rotate_shift() {
+pub fn test_rotate_shift() {
     // let n = 0xaa00000000006e1u64;
     // let n = 0x1234567890ABCDEFu64;
     // // let m = 0x6e10aa;
@@ -25,7 +28,7 @@ fn test_rotate_shift() {
 }
 
 #[test]
-fn test_read_u32_from_leb128() {
+pub fn test_read_u32_from_leb128() {
     let data: [u8; 4] = [0x12, 0x34, 0x56, 0x78];
     let mut reader = BufReader::new(data.as_ref());
     let res = read_u32_from_leb128(&mut reader);

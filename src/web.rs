@@ -1,6 +1,8 @@
 use actix_web::{get, App, HttpResponse, HttpServer, ResponseError};
-
+use askama::Template;
 use thiserror::Error;
+use crate::core::Context;
+use crate::core::FuncType;
 
 struct TodoEntry {
     id: u32,
@@ -47,25 +49,10 @@ async fn index2() -> Result<HttpResponse, MyError> {
 }
 
 #[actix_rt::main]
-async fn kick() -> Result<(), actix_web::Error> {
+pub async fn kick() -> Result<(), actix_web::Error> {
     HttpServer::new(move || App::new().service(index2))
         .bind("0.0.0.0:8080")?
         .run()
         .await?;
     Ok(())
-}
-
-impl Context {
-    fn new(types: Vec<FuncType>) -> Self {
-        Context {
-            types: types,
-            funcs: (),
-            tables: (),
-            mems: (),
-            globals: (),
-            locals: (),
-            labels: (),
-            r#return: (),
-        }
-    }
 }

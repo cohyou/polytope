@@ -1,9 +1,16 @@
-#[derive(Default)]
-struct Module {
-    types: Vec<FuncType>, 
+#[derive(Debug, PartialEq)]
+pub enum ValType {
+    i32, i64, f32, f64,
 }
 
-struct Context {
+pub type FuncType = (Vec<ValType>, Vec<ValType>);
+
+#[derive(Default)]
+pub struct Module {
+    pub types: Vec<FuncType>, 
+}
+
+pub struct Context {
     types: Vec<FuncType>,
     funcs: (),
     tables: (),
@@ -12,4 +19,19 @@ struct Context {
     locals: (),
     labels: (),
     r#return: (),
+}
+
+impl Context {
+    pub fn new(types: Vec<FuncType>) -> Self {
+        Context {
+            types: types,
+            funcs: (),
+            tables: (),
+            mems: (),
+            globals: (),
+            locals: (),
+            labels: (),
+            r#return: (),
+        }
+    }
 }

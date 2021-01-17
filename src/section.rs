@@ -1,3 +1,7 @@
+// type Byte = u8;
+use std::io::Read;
+use crate::core::{ValType, FuncType, Module};
+
 pub enum Section {
     Custom,
     Type,
@@ -32,10 +36,7 @@ pub fn id_to_section(id: Byte) -> Section {
     }
 }
 
-type Byte = u8;
-use std::io::{Read, BufReader};
-
-fn read_u32_from_leb128(reader: &mut impl Read) -> u32 {
+pub fn read_u32_from_leb128(reader: &mut impl Read) -> u32 {
     let mut acc: u32 = 0;
     let mut count: u8 = 0;
     for byte in reader.bytes() {
@@ -58,11 +59,6 @@ fn read_name(reader: &mut impl Read) -> String {
     let mut handle = reader.take(length as u64);
     let _ = handle.read_to_string(&mut buffer);
     buffer
-}
-
-#[derive(Debug, PartialEq)]
-enum ValType {
-    i32, i64, f32, f64,
 }
 
 fn read_valtype(reader: &mut impl Read) -> ValType {
@@ -88,7 +84,6 @@ fn read_resulttype(reader: &mut impl Read) -> Vec<ValType> {
     read_vec(reader, read_valtype)
 }
 
-type FuncType = (Vec<ValType>, Vec<ValType>);
 fn read_functype(reader: &mut impl Read) -> FuncType {
     // 0x60がprefix
     let param_types = read_resulttype(reader);
@@ -138,13 +133,13 @@ fn read_typesec(reader: &mut impl Read) -> Vec<FuncType> {
     read_vec(&mut handle, read_functype)
 }
 
-fn read_module(reader: &mut impl Read) -> io::Result<Module> {
+pub fn read_module(reader: &mut impl Read) -> io::Result<Module> {
     let mut module = Module::default();
 
     read_magic(reader)?;
     read_version(reader)?;
     while let Some(Ok(section_id)) = reader.bytes().next() {
-        match section::id_to_section(section_id) {
+        match id_to_section(section_id) {
             Section::Custom => read_customsec(reader),
             Section::Type => {
                 module.types = read_typesec(reader);

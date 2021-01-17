@@ -1,7 +1,10 @@
 use std::io::Write;
+use std::io::BufReader;
 use std::fs::File;
+use crate::section::read_module;
+use crate::core::{Module, Context};
 
-fn make_module(file_name: &str) {
+pub fn make_module(file_name: &str) {
     let magic: [u8; 4] = [0x6D, 0x73, 0x61, 0x00];
     let version: [u8; 4] = [0x00, 0x00, 0x00, 0x01];
 
@@ -14,7 +17,7 @@ fn validate_module(module: Module) {
     let context = Context::new(module.types);
 }
 
-fn decode_wasm(file_name: &str) {
+pub fn decode_wasm(file_name: &str) {
     let mut f = File::open(file_name).unwrap();
     let mut reader = BufReader::new(f);
     let _  = read_module(&mut reader);
