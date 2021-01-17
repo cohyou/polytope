@@ -53,7 +53,7 @@ pub fn read_u32_from_leb128(reader: &mut impl Read) -> u32 {
     acc
 }
 
-fn read_name(reader: &mut impl Read) -> String {
+pub fn read_name(reader: &mut impl Read) -> String {
     let length = read_u32_from_leb128(reader);
     let mut buffer = String::new();
     let mut handle = reader.take(length as u64);
@@ -80,7 +80,7 @@ fn byte_to_valtype(b :Byte) -> ValType {
     }
 }
 
-fn read_resulttype(reader: &mut impl Read) -> Vec<ValType> {
+pub fn read_resulttype(reader: &mut impl Read) -> Vec<ValType> {
     read_vec(reader, read_valtype)
 }
 

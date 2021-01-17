@@ -1,5 +1,6 @@
 use std::io::BufReader;
-use crate::section::read_u32_from_leb128;
+use crate::core::ValType;
+use crate::section::{read_name, read_u32_from_leb128, read_resulttype};
 
 #[allow(overflowing_literals)]
 pub fn test_rotate_shift() {
