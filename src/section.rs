@@ -1,4 +1,5 @@
 // type Byte = u8;
+use std::io;
 use std::io::Read;
 use crate::core::{ValType, FuncType, Module};
 
@@ -96,7 +97,6 @@ fn read_vec<T: Read, R>(reader: &mut T, f: fn(reader: &mut T) -> R) -> Vec<R> {
     (0..length).map(|_| f(reader)).collect()
 }
 
-use std::io;
 fn read_magic(reader: &mut impl Read) -> io::Result<()> {
     let magic: [u8; 4] = [0x00, 0x61, 0x73, 0x6D,];
     let mut buf: [u8; 4] = [0x00; 4];
@@ -116,6 +116,18 @@ fn read_version(reader: &mut impl Read) -> io::Result<()> {
         Ok(())
     } else {
         panic!("invalid on read_magic");
+    }
+}
+
+fn read_importdesc(reader: &mut impl Read) {
+    if let Some(Ok(byte)) = reader.bytes().next() {
+        match byte {
+            0x00 => {}, // typeidx
+            0x01 => {}, // tabletype
+            0x02 => {}, // memtype
+            0x03 => {}, // globaltype
+            _ => panic!("invalid on read_importdesc"),
+        }
     }
 }
 
