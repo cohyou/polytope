@@ -1,7 +1,7 @@
 // type Byte = u8;
 use std::io;
 use std::io::Read;
-use crate::core::{ValType, FuncType, Module};
+use crate::core::{ValType, FuncType, ImportDesc, Module};
 
 pub enum Section {
     Custom,
@@ -119,16 +119,27 @@ fn read_version(reader: &mut impl Read) -> io::Result<()> {
     }
 }
 
-fn read_importdesc(reader: &mut impl Read) {
+fn read_typeidx(reader: &mut impl Read) -> u32 {
+    read_u32_from_leb128(reader)
+}
+
+fn read_importdesc_func(reader: &mut impl Read) -> ImportDesc {
+    let typeidx = read_typeidx(reader);
+    ImportDesc::Func(typeidx)
+}
+
+fn read_importdesc(reader: &mut impl Read) -> ImportDesc {
     if let Some(Ok(byte)) = reader.bytes().next() {
         match byte {
-            0x00 => {}, // typeidx
+            0x00 => { return read_importdesc_func(reader) },
             0x01 => {}, // tabletype
             0x02 => {}, // memtype
             0x03 => {}, // globaltype
             _ => panic!("invalid on read_importdesc"),
         }
     }
+
+    unimplemented!()
 }
 
 fn read_customsec(reader: &mut impl Read) {
