@@ -4,12 +4,12 @@ use crate::util::{read_u32_from_leb128, read_vec};
 
 use super::typeidx::Typeidx;
 use super::tabletype::TableType;
-use super::memtype::MemType;
+use super::memtype::{MemType, read_memtype};
 use super::globaltype::{GlobalType, read_globaltype};
 use super::tabletype::read_tabletype;
-use super::limits::read_limits;
 use super::typeidx::read_typeidx;
 use super::name::{Name, read_name};
+
 
 pub(super) struct Import {
     module: Name,
@@ -23,6 +23,7 @@ enum ImportDesc {
     Mem(MemType),
     Global(GlobalType),
 }
+
 
 pub(super) fn read_importsec(reader: &mut impl Read) -> Vec<Import> {
     // prefixはsection number 2
@@ -57,8 +58,7 @@ fn read_importdesc(reader: &mut impl Read) -> ImportDesc {
 }
 
 fn read_importdesc_func(reader: &mut impl Read) -> ImportDesc {
-    let typeidx = read_typeidx(reader);
-    ImportDesc::Func(typeidx)
+    ImportDesc::Func(read_typeidx(reader))
 }
 
 fn read_importdesc_tabletype(reader: &mut impl Read) -> ImportDesc {
@@ -66,12 +66,10 @@ fn read_importdesc_tabletype(reader: &mut impl Read) -> ImportDesc {
 }
 
 fn read_importdesc_memtype(reader: &mut impl Read) -> ImportDesc {
-    let limits = read_limits(reader);
-    ImportDesc::Mem(MemType::new(limits))
+    ImportDesc::Mem(read_memtype(reader))
 }
 
 fn read_importdesc_globaltype(reader: &mut impl Read) -> ImportDesc {
-    let globaltype = read_globaltype(reader);
-    ImportDesc::Global(globaltype)
+    ImportDesc::Global(read_globaltype(reader))
 }
 

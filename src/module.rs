@@ -14,18 +14,29 @@ mod tabletype;
 mod customsec;
 mod typesec;
 mod importsec;
+mod funcsec;
+mod tablesec;
+mod memsec;
 
 
 use super::byte::Byte;
 use super::functype::FuncType;
 use customsec::read_customsec;
 use typesec::read_typesec;
-use importsec::Import;
+use importsec::{Import, read_importsec};
+use typeidx::Typeidx;
+use funcsec::read_funcsec;
+use tablesec::{Table, read_tablesec};
+use memsec::{Mem, read_memsec};
+
 
 #[derive(Default)]
 pub(super) struct Module {
     types: Vec<FuncType>, 
     imports: Vec<Import>,
+    funcs: Vec<Typeidx>,
+    tables: Vec<Table>,
+    mems: Vec<Mem>,
 }
 
 enum Section {
@@ -52,13 +63,11 @@ pub(super) fn read_module(reader: &mut impl Read) -> io::Result<Module> {
     while let Some(Ok(section_id)) = reader.bytes().next() {
         match id_to_section(section_id) {
             Section::Custom => read_customsec(reader),
-            Section::Type => {
-                module.types = read_typesec(reader);
-            },
-            Section::Import => (),
-            Section::Function => (),
-            Section::Table => (),
-            Section::Memory => (),
+            Section::Type => { module.types = read_typesec(reader); },
+            Section::Import => { module.imports = read_importsec(reader) },
+            Section::Function => { module.funcs = read_funcsec(reader) },
+            Section::Table => { module.tables = read_tablesec(reader) },
+            Section::Memory => { module.mems = read_memsec(reader) },
             Section::Global => (),
             Section::Export => (),
             Section::Start => (),
