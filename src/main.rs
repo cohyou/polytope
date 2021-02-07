@@ -10,7 +10,7 @@ fn main() {
             let _ = kick();
         },
         "module" => make_module("a.wasm"),
-        "test" => test_rotate_shift(),
+        // "test" => test_rotate_shift(),
         "decode" => decode_wasm("hobogo.wasm"),
         _ => println!("invalid sub command"),
     } 

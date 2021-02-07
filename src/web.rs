@@ -1,8 +1,8 @@
 use actix_web::{get, App, HttpResponse, HttpServer, ResponseError};
 use askama::Template;
 use thiserror::Error;
-use crate::core::Context;
-use crate::core::FuncType;
+// use crate::context::Context;
+// use crate::functype::FuncType;
 
 struct TodoEntry {
     id: u32,
