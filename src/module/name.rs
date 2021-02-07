@@ -1,7 +1,9 @@
 use std::io::Read;
 use crate::util::read_u32_from_leb128;
 
-pub fn read_name(reader: &mut impl Read) -> String {
+pub(super) type Name = String;
+
+pub(super) fn read_name(reader: &mut impl Read) -> Name {
     let length = read_u32_from_leb128(reader);
     let mut buffer = String::new();
     let mut handle = reader.take(length as u64);

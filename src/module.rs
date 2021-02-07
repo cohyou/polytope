@@ -20,10 +20,12 @@ use super::byte::Byte;
 use super::functype::FuncType;
 use customsec::read_customsec;
 use typesec::read_typesec;
+use importsec::Import;
 
 #[derive(Default)]
 pub(super) struct Module {
     types: Vec<FuncType>, 
+    imports: Vec<Import>,
 }
 
 enum Section {
