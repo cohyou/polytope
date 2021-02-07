@@ -40,21 +40,22 @@ use globalsec::{Global, read_globalsec};
 use exportsec::{Export, read_exportsec};
 use startsec::{Start, read_startsec};
 use elemsec::{Elem, read_elemsec};
+use codesec::{read_codesec};
 use datasec::{Data, read_datasec};
 
 
 #[derive(Default)]
 pub(super) struct Module {
     types: Vec<FuncType>, 
-    imports: Vec<Import>,
     funcs: Vec<Typeidx>,
     tables: Vec<Table>,
     mems: Vec<Mem>,
     globals: Vec<Global>,
-    exports: Vec<Export>,
-    start: Option<Start>,
     elem: Vec<Elem>,
     data: Vec<Data>,
+    start: Option<Start>,
+    imports: Vec<Import>,
+    exports: Vec<Export>,
 }
 
 enum Section {
@@ -90,7 +91,7 @@ pub(super) fn read_module(reader: &mut impl Read) -> io::Result<Module> {
             Section::Export => { module.exports = read_exportsec(reader) },
             Section::Start => { module.start = Some(read_startsec(reader)) },
             Section::Element => { module.elem = read_elemsec(reader) },
-            Section::Code => (),
+            Section::Code => read_codesec(reader),
             Section::Data => { module.data = read_datasec(reader) },
         }
     }
