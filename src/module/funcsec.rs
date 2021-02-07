@@ -1,7 +1,7 @@
 use std::io::Read;
 
 use crate::util::{read_u32_from_leb128, read_vec};
-use super::typeidx::{Typeidx, read_typeidx};
+use super::idx::{Typeidx, read_typeidx};
 
 pub(super) fn read_funcsec(reader: &mut impl Read) -> Vec<Typeidx> {
     // prefixはsection number 3

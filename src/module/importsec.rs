@@ -2,12 +2,12 @@ use std::io::Read;
 
 use crate::util::{read_u32_from_leb128, read_vec};
 
-use super::typeidx::Typeidx;
+use super::idx::Typeidx;
 use super::tabletype::TableType;
 use super::memtype::{MemType, read_memtype};
 use super::globaltype::{GlobalType, read_globaltype};
 use super::tabletype::read_tabletype;
-use super::typeidx::read_typeidx;
+use super::idx::read_typeidx;
 use super::name::{Name, read_name};
 
 

@@ -1,12 +1,14 @@
 use std::io::{self, Read};
 use super::context::Context;
 
-mod typeidx;
+mod idx;
 mod elemtype;
 mod globaltype;
+mod instr;
 
 mod limits;
 mod name;
+mod expr;
 
 mod memtype;
 mod tabletype;
@@ -17,6 +19,12 @@ mod importsec;
 mod funcsec;
 mod tablesec;
 mod memsec;
+mod globalsec;
+mod exportsec;
+mod startsec;
+mod elemsec;
+mod codesec;
+mod datasec;
 
 
 use super::byte::Byte;
@@ -24,10 +32,15 @@ use super::functype::FuncType;
 use customsec::read_customsec;
 use typesec::read_typesec;
 use importsec::{Import, read_importsec};
-use typeidx::Typeidx;
+use idx::Typeidx;
 use funcsec::read_funcsec;
 use tablesec::{Table, read_tablesec};
 use memsec::{Mem, read_memsec};
+use globalsec::{Global, read_globalsec};
+use exportsec::{Export, read_exportsec};
+use startsec::{Start, read_startsec};
+use elemsec::{Elem, read_elemsec};
+use datasec::{Data, read_datasec};
 
 
 #[derive(Default)]
@@ -37,6 +50,11 @@ pub(super) struct Module {
     funcs: Vec<Typeidx>,
     tables: Vec<Table>,
     mems: Vec<Mem>,
+    globals: Vec<Global>,
+    exports: Vec<Export>,
+    start: Option<Start>,
+    elem: Vec<Elem>,
+    data: Vec<Data>,
 }
 
 enum Section {
@@ -68,12 +86,12 @@ pub(super) fn read_module(reader: &mut impl Read) -> io::Result<Module> {
             Section::Function => { module.funcs = read_funcsec(reader) },
             Section::Table => { module.tables = read_tablesec(reader) },
             Section::Memory => { module.mems = read_memsec(reader) },
-            Section::Global => (),
-            Section::Export => (),
-            Section::Start => (),
-            Section::Element => (),
+            Section::Global => { module.globals = read_globalsec(reader) },
+            Section::Export => { module.exports = read_exportsec(reader) },
+            Section::Start => { module.start = Some(read_startsec(reader)) },
+            Section::Element => { module.elem = read_elemsec(reader) },
             Section::Code => (),
-            Section::Data => (),
+            Section::Data => { module.data = read_datasec(reader) },
         }
     }
 
