@@ -8,6 +8,8 @@ pub(super) type Funcidx = u32;
 pub(super) type Tableidx = u32;
 pub(super) type Memidx = u32;
 pub(super) type Globalidx = u32;
+pub(super) type Labelidx = u32;
+pub(super) type Localidx = u32;
 
 
 pub(super) fn read_typeidx(reader: &mut impl Read) -> Typeidx {
