@@ -1,7 +1,7 @@
 use std::io::Read;
 use super::byte::Byte;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum ValType {
     I32, I64, F32, F64,
 }

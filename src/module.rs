@@ -1,5 +1,5 @@
 use std::io::{self, Read};
-use super::context::Context;
+// use super::context::Context;
 
 mod idx;
 mod elemtype;
@@ -32,8 +32,7 @@ use super::functype::FuncType;
 use customsec::read_customsec;
 use typesec::read_typesec;
 use importsec::{Import, read_importsec};
-use idx::Typeidx;
-use funcsec::read_funcsec;
+use funcsec::{Func, read_funcsec};
 use tablesec::{Table, read_tablesec};
 use memsec::{Mem, read_memsec};
 use globalsec::{Global, read_globalsec};
@@ -47,7 +46,7 @@ use datasec::{Data, read_datasec};
 #[derive(Default)]
 pub(super) struct Module {
     types: Vec<FuncType>, 
-    funcs: Vec<Typeidx>,
+    funcs: Vec<Func>,
     tables: Vec<Table>,
     mems: Vec<Mem>,
     globals: Vec<Global>,
@@ -91,7 +90,11 @@ pub(super) fn read_module(reader: &mut impl Read) -> io::Result<Module> {
             Section::Export => { module.exports = read_exportsec(reader) },
             Section::Start => { module.start = Some(read_startsec(reader)) },
             Section::Element => { module.elem = read_elemsec(reader) },
-            Section::Code => read_codesec(reader),
+            Section::Code => {
+                for (i, code) in read_codesec(reader).iter().enumerate() {
+                    module.funcs[i].setCode(code);
+                }
+            },
             Section::Data => { module.data = read_datasec(reader) },
         }
     }
@@ -99,9 +102,9 @@ pub(super) fn read_module(reader: &mut impl Read) -> io::Result<Module> {
     Ok(module)
 }
 
-pub(super) fn validate_module(module: Module) {
-    let context = Context::new(module.types);
-}
+// pub(super) fn validate_module(module: Module) {
+//     let context = Context::new(module.types);
+// }
 
 fn read_magic(reader: &mut impl Read) -> io::Result<()> {
     let magic: [u8; 4] = [0x00, 0x61, 0x73, 0x6D,];

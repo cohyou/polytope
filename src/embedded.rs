@@ -13,11 +13,11 @@ pub fn make_module(file_name: &str) {
 }
 
 pub fn decode_wasm(file_name: &str) {
-    let mut f = File::open(file_name).unwrap();
+    let f = File::open(file_name).unwrap();
     let mut reader = BufReader::new(f);
     let _  = read_module(&mut reader);
 }
 
-fn instanciate() {}
+// fn instanciate() {}
 
-fn invoke() {}
+// fn invoke() {}
