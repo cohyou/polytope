@@ -6,7 +6,7 @@ pub enum ValType {
     I32, I64, F32, F64,
 }
 
-fn byte_to_valtype(b :Byte) -> ValType {
+pub(super) fn byte_to_valtype(b :Byte) -> ValType {
     match b {
         0x7F => ValType::I32,
         0x7E => ValType::I64,

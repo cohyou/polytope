@@ -1,10 +1,14 @@
+mod reader;
+
+pub(super) use reader::read_instr;
+
 use std::rc::Rc;
 use std::cell::RefCell;
 
 use crate::valtype::ValType;
 use crate::functype::FuncType;
 use super::expr::Expr;
-use super::idx::{Labelidx, Funcidx, Localidx, Globalidx,};
+use super::idx::{Labelidx, Funcidx, Localidx, Globalidx, Typeidx};
 
 type ResultType = Vec<ValType>;
 
@@ -53,13 +57,19 @@ pub(super) struct Frame {
 }
 
 #[derive(Clone)]
+pub(super) enum BlockType {
+    Vt(Option<ValType>),
+    X(Typeidx),
+}
+
+#[derive(Clone)]
 pub(super) enum Instr {
     /* Block Instructions */
 
     // Control Instructions
-    Block(ResultType, Expr),
-    Loop(ResultType, Expr),
-    If(ResultType, Expr, Expr),
+    Block(BlockType, Expr),
+    Loop(BlockType, Expr),
+    If(BlockType, Expr, Option<Expr>),
 
     /* Plain Instructions */
 
@@ -97,8 +107,8 @@ pub(super) enum Instr {
     MemoryGrow,
 
     // Numeric Instructions
-    I32Const(u32),
-    I64Const(u64),
+    I32Const(i32),
+    I64Const(i64),
     F32Const(f32),
     F64Const(f64),
 
@@ -165,3 +175,4 @@ pub enum CvtOp {
     IReinterpretFromF(ValSize),
     FReinterpretFromI(ValSize),
 }
+
