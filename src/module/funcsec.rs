@@ -8,12 +8,13 @@ use super::codesec::Code;
 
 
 pub(super) struct Func {
-    tp: Typeidx,
+    #[allow(dead_code)] tp: Typeidx,
     locals: Vec<ValType>,
     body: Expr,
 }
 
 impl Func {
+    #[allow(non_snake_case)] 
     pub(super) fn setCode(&mut self, code: &Code) {
         self.locals = code.locals();
         self.body = code.body();

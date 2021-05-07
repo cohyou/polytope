@@ -2,8 +2,8 @@ use std::io::Read;
 use crate::util::read_u32_from_leb128;
 
 pub struct Limits {
-    min: u32,
-    max: Option<u32>,
+    #[allow(dead_code)] min: u32,
+    #[allow(dead_code)] max: Option<u32>,
 }
 
 impl Limits {

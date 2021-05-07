@@ -7,9 +7,9 @@ use super::expr::{Expr, read_expr};
 
 
 pub(super) struct Elem {
-    table: Tableidx,
-    offset: Expr,
-    init: Vec<Funcidx>,
+    #[allow(dead_code)] table: Tableidx,
+    #[allow(dead_code)] offset: Expr,
+    #[allow(dead_code)] init: Vec<Funcidx>,
 }
 
 pub(super) fn read_elemsec(reader: &mut impl Read) -> Vec<Elem> {

@@ -8,8 +8,8 @@ use super::name::{Name, read_name};
 
 
 pub(super) struct Export {
-    name: Name,
-    desc: ExportDesc,
+    #[allow(dead_code)] name: Name,
+    #[allow(dead_code)] desc: ExportDesc,
 }
 
 enum ExportDesc {

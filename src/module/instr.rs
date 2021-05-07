@@ -10,6 +10,7 @@ use crate::functype::FuncType;
 use super::expr::Expr;
 use super::idx::{Labelidx, Funcidx, Localidx, Globalidx, Typeidx};
 
+#[allow(dead_code)] 
 type ResultType = Vec<ValType>;
 
 type Addr = usize;  // 仕様は自由なのでひとまずusize
@@ -25,13 +26,13 @@ pub(super) struct MemArg {
 }
 
 enum ExternVal {
-    Func(FuncAddr),
-    Table(TableAddr),
-    Mem(MemAddr),
-    Global(GlobalAddr),
+    #[allow(dead_code)] Func(FuncAddr),
+    #[allow(dead_code)] Table(TableAddr),
+    #[allow(dead_code)] Mem(MemAddr),
+    #[allow(dead_code)] Global(GlobalAddr),
 }
 
-struct ExportInst { name: String, value: ExternVal }
+struct ExportInst { #[allow(dead_code)] name: String, #[allow(dead_code)] value: ExternVal }
 
 struct ModuleInst {
     pub types: Vec<FuncType>,
@@ -44,10 +45,10 @@ struct ModuleInst {
 
 #[derive(Clone)]
 enum Val {
-    I32Const(u32),
-    I64Const(u64),
-    F32Const(f32),
-    F64Const(f64),
+    #[allow(dead_code)] I32Const(u32),
+    #[allow(dead_code)] I64Const(u64),
+    #[allow(dead_code)] F32Const(f32),
+    #[allow(dead_code)] F64Const(f64),
 }
 
 #[derive(Clone)]
@@ -126,12 +127,12 @@ pub(super) enum Instr {
     CvtOp(CvtOp),
 
     // Administrative Instructions
-    Trap,
-    Invoke(FuncAddr),
-    InitElem(TableAddr, u32, Vec<Funcidx>),
-    InitData(MemAddr, u32, Vec<u8>),
-    Label(usize, Vec<Instr>, Vec<Instr>),
-    Frame(usize, Frame, Vec<Instr>),
+    // Trap,
+    // Invoke(FuncAddr),
+    // InitElem(TableAddr, u32, Vec<Funcidx>),
+    // InitData(MemAddr, u32, Vec<u8>),
+    // Label(usize, Vec<Instr>, Vec<Instr>),
+    // Frame(usize, Frame, Vec<Instr>),
 }
 
 #[derive(Debug, PartialEq, Clone)]

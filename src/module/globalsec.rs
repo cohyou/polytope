@@ -5,8 +5,8 @@ use super::globaltype::{GlobalType, read_globaltype};
 use super::expr::{Expr, read_expr};
 
 pub(super) struct Global {
-    tp: GlobalType,
-    init: Expr,
+    #[allow(dead_code)] tp: GlobalType,
+    #[allow(dead_code)] init: Expr,
 }
 
 

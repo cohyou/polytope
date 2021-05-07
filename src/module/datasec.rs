@@ -7,9 +7,9 @@ use super::expr::{Expr, read_expr};
 
 
 pub(super) struct Data {
-    data: Memidx,
-    offset: Expr,
-    init: Vec<Byte>,
+    #[allow(dead_code)] data: Memidx,
+    #[allow(dead_code)] offset: Expr,
+    #[allow(dead_code)] init: Vec<Byte>,
 }
 
 

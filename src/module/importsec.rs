@@ -12,9 +12,9 @@ use super::name::{Name, read_name};
 
 
 pub(super) struct Import {
-    module: Name,
-    name: Name,
-    desc: ImportDesc,
+    #[allow(dead_code)] module: Name,
+    #[allow(dead_code)] name: Name,
+    #[allow(dead_code)] desc: ImportDesc,
 }
 
 enum ImportDesc {

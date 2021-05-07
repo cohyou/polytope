@@ -6,7 +6,7 @@ use super::expr::{Expr, read_expr};
 
 
 pub(super) struct Code {
-    size: u32,
+    #[allow(dead_code)] size: u32,
     locals: Vec<Locals>,
     body: Expr,
 }

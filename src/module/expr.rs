@@ -10,6 +10,7 @@ pub(super) fn read_expr(reader: &mut impl Read) -> Expr {
     read_instrs(reader, 0x0B)
 }
 
+#[allow(dead_code)]
 pub(super) fn read_expr_else(reader: &mut impl Read) -> Expr {
     read_instrs(reader, 0x05)
 }
