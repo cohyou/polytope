@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <body style="font-family: 'Courier New', Courier, monospace; font-size: xx-large;">
+    <span style="color: brown;">#sort</span>&nbsp;Bool
+    <br>
+    <br>
+    <span style="color: brown;">#func</span>&nbsp;true <span style="color: brown;">:</span> Bool
+    <br>
+    <span style="color: brown;">#func</span>&nbsp;false <span style="color: brown;">:</span> Bool
+    <br>
+    <span style="color: brown;">#func</span>&nbsp;not <span style="color: brown;">:</span> Bool -> Bool
+    <br>
+    <span style="color: brown;">#func</span>&nbsp;and <span style="color: brown;">:</span> Bool * Bool -> Bool
+    <br>
+    <span style="color: brown;">#func</span>&nbsp;or <span style="color: brown;">:</span> Bool * Bool -> Bool
+    <br>
+    <br>
+    <span style="color: brown;">#rule</span> a <span style="color: brown;">:</span> Bool <span style="color: brown;">|</span> a OR false <span style="color: brown;">=</span> a
+    <br>
+    <span style="color: brown;">#rule</span> a <span style="color: brown;">:</span> Bool <span style="color: brown;">|</span> and!&lt;a true&gt; <span style="color: brown;">=</span> a
+    <br>
+    <span style="color: brown;">#rule</span> a b <span style="color: brown;">:</span> Bool <span style="color: brown;">|</span> &lt;a b&gt;.or <span style="color: brown;">=</span> &lt;b a&gt;.or
+    <br>
+    <span style="color: brown;">#rule</span> a b <span style="color: brown;">:</span> Bool <span style="color: brown;">|</span> and!&lt;a b&gt; <span style="color: brown;">=</span> and!&lt;b a&gt;
+    <br>
+    <span style="color: brown;">#rule</span> a <span style="color: brown;">:</span> Bool <span style="color: brown;">|</span> &lt;a a.not&gt;.or <span style="color: brown;">=</span> true
+    <br>
+    <span style="color: brown;">#rule</span> a b c <span style="color: brown;">:</span> Bool <span style="color: brown;">|</span> a OR (b AND c) <span style="color: brown;">=</span> (a OR b) AND (a OR c)
+    <br>
+    <span style="color: brown;">#rule</span> a b c <span style="color: brown;">:</span> Bool <span style="color: brown;">|</span> &lt;a &lt;b c&gt;.and&gt;.or <span style="color: brown;">=</span> &lt;&lt;a b&gt;.or &lt;a c&gt;.or&gt;.and
+    <br>
+    <span style="color: brown;">#rule</span> a b c <span style="color: brown;">:</span> Bool <span style="color: brown;">|</span> or!&lt;a and!&lt;b c&gt;&gt; <span style="color: brown;">=</span> and!&lt;or!&lt;a b&gt; or!&lt;a c&gt;&gt;
+    <br>
+  </body>
+</html>
